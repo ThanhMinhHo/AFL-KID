@@ -1,0 +1,636 @@
+<html>
+
+<head>
+
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet">
+    <!-- //<script src="js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+    <style>
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            background-color: #f1f1f1;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 16px;
+            text-decoration: none;
+        }
+
+        .sidebar a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        div.content {
+            margin-left: 200px;
+            padding: 1px 16px;
+            height: 1000px;
+        }
+
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+        }
+
+        .blue {
+
+            background-color: rgb(255, 0, 149);
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        #wrapper {
+            width: 100%;
+        }
+
+        #page-wrapper {
+            padding: 0 15px;
+            min-height: 568px;
+            background-color: rgb(42, 173, 2);
+            /* background: url("images/profile_bg.jpg") no-repeat;
+            background-size: cover; */
+        }
+
+        .profile-userpic img {
+            float: none;
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+            -webkit-border-radius: 50% !important;
+            -moz-border-radius: 50% !important;
+            border-radius: 50% !important;
+        }
+
+        .profile-usertitle {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+
+        .profile-usertitle-name {
+            color: #5a7391;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .title {
+            color: #000;
+            background: #fff;
+            padding: 7px 0px;
+            font-size: 18px;
+        }
+
+        .page-header {
+            color: #fff;
+        }
+
+        .connected-sortable img {
+            height: 115px;
+            width: 119px;
+            margin: 3px 3px 5px;
+            padding: 0;
+        }
+
+        #dvSource,
+        #dvDest {
+            border: 5px solid #ccc;
+            padding: 13px 5px 5px 10px;
+            min-height: 400px;
+        }
+
+        .custom_mdl_close {
+            position: absolute !important;
+            background: #4acafb !important;
+            right: -9px !important;
+            top: -11px !important;
+            z-index: 1 !important;
+            border-radius: 50px !important;
+            opacity: 1 !important;
+            padding: 4px 8px !important;
+            font-weight: 300 !important;
+            border: 2px solid #fff !important;
+            color: #fff !important;
+        }
+
+        .custom_save_btn .modal-header {
+            padding: 0px;
+            border: none;
+        }
+
+        .thumbnail {
+            display: inline-block;
+            width: 20%;
+        }
+
+        .selectWrapper {
+            border-radius: 36px;
+            display: inline-block;
+            overflow: hidden;
+            background: #cccccc;
+            border: 1px solid #cccccc;
+        }
+
+        .selectBox {
+            border: 0px;
+            height: 20px;
+            outline: none;
+        }
+
+        #rcorners1 {
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+
+        <h1 class="text-primary" style="text-align:center;font-size:22px;">KIDS FANTASY LEAGUE</h1>
+        <p style="color:magenta;text-align:center;font-size:15px;">{{theTime}}</p>
+        <div class="alert alert-danger text-center" ng-show="errMessageDisplay">
+            <strong>Warm!</strong> {{errMessage}}
+        </div>
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <!-- <div class="profile-userpic">
+                    <img src="images/profile.png" class="img-responsive" alt="">
+                </div> -->
+                <!-- END SIDEBAR USERPIC -->
+                <!-- SIDEBAR USER TITLE -->
+                <!-- <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">
+                        <a href="/profile"> </a>
+                    </div>
+                </div> -->
+                <ul class="list-group">
+                    <li class="list-group-item active text-center">{{teamName|uppercase}}</li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        My Account
+                        <span class="badge badge-primary badge-pill"
+                            style="background-color:red">{{money| currency}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Points
+                        <span class="badge badge-primary badge-pill" style="background-color:red">{{point}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Overal Rank
+                        <span class="badge badge-primary badge-pill" style="background-color:red">{{MyRanking}}</span>
+                    </li>
+                </ul>
+                <div class="sidebar">
+                    <a href="#" ng-class="{active: selected=='leaderboard'}" ng-click="leaderboard()"> Leaderboard</a>
+                    <a href="#" ng-class="{active: selected=='MyPointHistory'}" ng-click="MyPointHistory()">My Point
+                        History</a>
+                    <a href="#" ng-class="{active: selected=='DraftTeam'}" ng-click="DraftTeam()"> Draft Team</a>
+                    <a href="#" ng-class="{active: selected=='ViewMyTeam'}" ng-click="ViewMyTeam()">View My Team</a>
+                    <a href="#" ng-class="{active: selected=='GainPoint'}" ng-click="GainPoint()">Gain points
+                        <span class="badge badge-primary badge-pill"
+                            style="background-color:rgb(88, 117, 9)">{{GainPointAtempt}}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- View My point history -->
+        <div id="page-wrapper" ng-show="PointHistoryDisplay">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header text-center">Point History Display</h3>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">Point</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="row in ResultPointHistory">
+                    <tr>
+                        <th scope="row">{{$index + 1 }}</th>
+                        <td>{{row.Point}}</td>
+                        <td>{{row.updated| date :  "medium" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: rgb(50, 216, 122)">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center" style="color:rgb(22, 9, 9)">Select player to substitute</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="dvSource" class="connected-sortable droppable-area1"
+                                    style="background-color: rgb(138, 228, 177)">
+                                    <div class="clearfix"></div>
+                                    <ul class="list-group">
+                                        <li class="thumbnail"
+                                            ng-repeat="row in playerPools| startFrom:currentPage*pageSize | limitTo:pageSize">
+                                            <div ng-if="row.Performance > 0">
+                                                <h4 class="col-md-12  glyphicon glyphicon-triangle-top text-primary"
+                                                    style="height: 15;">
+                                                    {{row.Performance}}
+                                                </h4>
+                                                <div class="col-md-12 font-weight-bold text-center text-primary">
+                                                    {{row.Value| currency}}
+                                                </div>
+
+                                                <a href="#" class="col-md-12" ng-class="{blue: selected==$index}"
+                                                    style="width: 100;height: 130">
+                                                    <img ng-src="{{row.imageLink}}"
+                                                        ng-click="ModelSelectedPlayerToSubstitute(row,$index)">
+                                                </a>
+
+                                                <div class="col-md-12 font-weight-bold  text-primary"
+                                                    style="height: 50px;">
+                                                    {{row.playerName}}
+                                                </div>
+                                            </div>
+                                            <div ng-if="row.Performance == 0">
+                                                <h4 class="col-md-12  text-success" style="height: 15px;">
+                                                </h4>
+                                                <div class="col-md-12 font-weight-bold text-center text-success">
+                                                    {{row.Value| currency}}
+                                                </div>
+                                                <a href="#" class="col-md-12" ng-class="{blue: selected==$index}"
+                                                    style="width: 100;height: 130">
+                                                    <img ng-src="{{row.imageLink}}"
+                                                        ng-click="ModelSelectedPlayerToSubstitute(row,$index)">
+                                                </a>
+
+                                                <div class="col-md-12 font-weight-bold  text-success"
+                                                    style="height: 50px;">
+                                                    {{row.playerName}}
+                                                </div>
+                                            </div>
+                                            <div ng-if="row.Performance < 0">
+                                                <h4 class="col-md-12  glyphicon glyphicon-triangle-bottom text-danger"
+                                                    style="height: 15px;">
+                                                    {{row.Performance}}
+                                                </h4>
+                                                <div class="col-md-12 font-weight-bold text-center text-danger">
+                                                    {{row.Value| currency}}
+                                                </div>
+                                                <a href="#" class="col-md-12" ng-class="{blue: selected==$index}"
+                                                    style="width: 100;height: 130">
+                                                    <img ng-src="{{row.imageLink}}"
+                                                        ng-click="ModelSelectedPlayerToSubstitute(row,$index)">
+                                                </a>
+
+                                                <div class="col-md-12 font-weight-bold  text-danger"
+                                                    style="height: 50px;">
+                                                    {{row.playerName}}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4">
+                                            <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                                                Previous
+                                            </button>
+                                            {{currentPage+1}}/{{numberOfPages()}}
+                                            <button ng-disabled="currentPage >= PlayerStatic.length/pageSize - 1"
+                                                ng-click="currentPage=currentPage+1">
+                                                Next
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="SubstituteSave()"
+                            data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- View My team -->
+        <div id="page-wrapper" ng-show="MyTeamDisplay">
+            <div class="row">
+                <h3 class="page-header text-center">View My Team</h3>
+            </div>
+            <div class="row">
+                <ul class="col-md-12">
+                    <div id="dvSource" class="connected-sortable droppable-area1">
+                        <li class="thumbnail"
+                            ng-repeat="row in viewTeam | startFrom:currentPage*pageSize | limitTo:pageSize">
+                            <div ng-if="row.Performance > 0">
+                                <h4 class="col-md-12  glyphicon glyphicon-triangle-top text-primary"
+                                    style="height: 15;">
+                                    {{row.Performance}}
+                                </h4>
+                                <div class="col-md-12 font-weight-bold text-center text-primary">
+                                    {{row.Value| currency}}
+                                </div>
+                                <a href="#" class="col-md-12">
+                                    <img draggable="true" ng-src="{{row.imageLink}}" style="width: 130; height: 150;"
+                                        data-toggle="modal" data-target="#myModal" ng-click="ViewModel(row._id)">
+                                </a>
+                                <div class="col-md-12 font-weight-bold  text-primary" style="height: 50px;">
+                                    {{row.playerName}}
+                                </div>
+                            </div>
+                            <div ng-if="row.Performance == 0">
+                                <h4 class="col-md-12  text-success" style="height: 15px;">
+
+                                </h4>
+                                <div class="col-md-12 font-weight-bold text-center text-success">
+                                    {{row.Value| currency}}
+                                </div>
+                                <a href="#" class="col-md-12">
+                                    <img draggable="true" ng-src="{{row.imageLink}}" style="width: 130; height: 150;"
+                                        data-toggle="modal" data-target="#myModal" ng-click="ViewModel(row._id)">
+                                </a>
+                                <div class="col-md-12 font-weight-bold  text-success" style="height: 50px;">
+                                    {{row.playerName}}
+                                </div>
+                            </div>
+                            <div ng-if="row.Performance < 0">
+                                <h4 class="col-md-12  glyphicon glyphicon-triangle-bottom text-danger"
+                                    style="height: 15px;">
+                                    {{row.Performance}}
+                                </h4>
+                                <div class="col-md-12 font-weight-bold text-center text-danger">
+                                    {{row.Value| currency}}
+                                </div>
+                                <a href="#" class="col-md-12">
+                                    <img draggable="true" ng-src="{{row.imageLink}}" style="width: 130; height: 150;"
+                                        data-toggle="modal" data-target="#myModal" ng-click="ViewModel(row._id)">
+                                </a>
+                                <div class="col-md-12 font-weight-bold  text-danger" style="height: 50px;">
+                                    {{row.playerName}}
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <!-- choose the team -->
+        <div id="page-wrapper" ng-show="DraftTeamDisplay">
+            <div class="row">
+                <h3 class="page-header text-center">Draft Team</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div id="dvSource" class="connected-sortable droppable-area1">
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <form class="form-inline center">
+                                    <input id="rcorners1" placeholder="Enter player" class="col-sm-6" type="text"
+                                        class="form-control" name="title" ng-model="PlayerName"
+                                        ng-keypress="($event.charCode==13)? SearchPlayerName() : return"></input>
+
+                                    <div class="col-sm-6 selectWrapper">
+                                        <select class="selectBox" ng-model="Search" ng-change="SearchTeam()">
+                                            <option value="">Select Team</option>
+                                            <option ng-repeat="team in teams" value="{{team.type}}">{{team.type}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <ul class="list-group">
+                            <li class="thumbnail"
+                                ng-repeat="row in playerPools | startFrom:currentPage*pageSize | limitTo:pageSize">
+                                <div class="col-md-12 font-weight-bold text-center text-primary">
+                                    {{row.Value| currency}}
+                                </div>
+                                <div class="col-md-12" ng-click="SelectPlayerFromPools(row._id)">
+                                    <img ng-src="{{row.imageLink}}">
+                                </div>
+                                <div class="col-md-12 font-weight-bold text-danger">
+                                    {{row.playerName}}
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                                    Previous
+                                </button>
+                                {{currentPage+1}}/{{numberOfPages()}}
+                                <button ng-disabled="currentPage >= PlayerStatic.length/pageSize - 1"
+                                    ng-click="currentPage=currentPage+1">
+                                    Next
+                                </button>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div id="dvDest" class="connected-sortable droppable-area2">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4 custom-points">
+                            <input type="text" class="form-control text-center" placeholder="Enter your team name"
+                                name="teamName" ng-model="teamName">
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="clearfix"></div>
+                        <ul class="list-group">
+                            <li class="thumbnail" ng-repeat="row in playerSelected">
+                                <div class="col-md-12 font-weight-bold text-center text-primary">
+                                    {{row.Value| currency}}
+                                </div>
+                                <div ng-click="ReturnPlayerFromTheSelectedTeam(row._id, row.imageLink)">
+                                    <img draggable="true" ng-src="{{row.imageLink}}">
+                                    <a href="#" class="font-weight-bold text-danger"> {{row.playerName}}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="SaveTeamSelected()">Save
+                        Team</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- Leaderboard -->
+        <div id="page-wrapper" ng-show="LeaderBoarDisplay">
+            <div class="row text-center">
+                    
+                <h3 class="page-header ">Leader boards <button type="submit" class="btn glyphicon glyphicon-refresh btn-primary"
+                    ng-click="RefeshResult()"></button></h3>
+               
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Team Name</th>
+                        <th scope="col">Point</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="row in ResultLeaderboard | startFrom:currentPage*pageSize | limitTo:pageSize">
+                    <tr>
+                        <th scope="row">{{ row[0].index }}</th>
+                        <td>{{row[1].TeamName}}</td>
+                        <td>{{row[1].Point}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                    Previous
+                </button>
+                {{currentPage+1}}/{{numberOfPages()}}
+                <button ng-disabled="currentPage >= ResultLeaderboard.length/pageSize - 1"
+                    ng-click="currentPage=currentPage+1">
+                    Next
+                </button>
+            </div>
+
+
+
+
+        </div>
+        <!--End Leaderboard -->
+        <!-- Gain Point -->
+        <div id="page-wrapper" ng-show="GainPointDisplay" style="background-color: #fdfdfded;">
+            <div class="row" ng-hide="WatchAndGetPoint">
+                <h2 style="color:gold">{{TextQuizAttempt}}</h2>
+            </div>
+            <div class="row" ng-show="WatchAndGetPoint">
+                <div class="col-sm-8">
+                    <h1 style="color:blue; font-family:Arial, Helvetica, sans-serif; text-align: center;">Geelong and
+                        Melbourne
+                    </h1>
+                    <video class="col-sm-12" controls>
+                        <source src="Videos/Geelong v Melbourne.mp4" type="video/mp4">
+                    </video>
+
+                </div>
+                <div class="col-sm-4">
+                    <h1 class="text-primary">Start a Quiz</h1>
+                    <p class="text-success">Each round, You have only one oppotunity in to gain max 10 points</p>
+                    <div class="alert alert-danger" ng-show="errshow">
+                        <strong>Warm!</strong> {{err}}
+                    </div>
+                    <h4>How was the final score?</h1>
+                        <form class="form-horizontal">
+                            <input type="radio" name="quiz" ng-model="FirstQuestion" value="Geloong 100 - Melbourne 98">
+                            Geloong
+                            100 - Melbourne 98 <br>
+                            <input type="radio" name="quiz" ng-model="FirstQuestion" value="Geloong 60 - Melbourne 98">
+                            Geloong
+                            60 - Melbourne 98 <br>
+                            <input type="radio" name="quiz" ng-model="FirstQuestion" value="Geloong 100 - Melbourne 97">
+                            Geloong
+                            100 - Melbourne 97 <br>
+                            <input type="radio" name="quiz" ng-model="FirstQuestion" value="Other"> Other <br>
+                        </form>
+                        <h4>Which player get the final score?</h1>
+                            <form class="form-horizontal">
+                                <input type="radio" name="quiz" ng-model="SecondQuestion" value="Dylan Grimes"> Dylan
+                                Grimes
+                                <br>
+                                <input type="radio" name="quiz" ng-model="SecondQuestion" value="Billie Smedts"> Billie
+                                Smedts
+                                <br>
+                                <input type="radio" name="quiz" ng-model="SecondQuestion" value="Dan Butler"> Dan Butler
+                                <br>
+                                <input type="radio" name="quiz" ng-model="SecondQuestion" value="Shane Edwards"> Shane
+                                Edwards
+                                <br>
+                            </form>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="bg-primary text-white"
+                                        ng-click="SubmitQuiz()">Submit</button>
+                                </div>
+                            </div>
+                            <h3 ng-show="gainPointshow" class="text-danger">You gains {{gainPoint}} points</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /#wrapper -->
+</body>
+
+</html>

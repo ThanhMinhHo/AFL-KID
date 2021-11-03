@@ -1,0 +1,77 @@
+<html>
+
+<head>
+    <base href="/">
+    <title>KFL</title>
+    <meta property="og:url" content="https://www.your-domain.com/your-page.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Your Website Title" />
+    <meta property="og:description" content="Your description" />
+    <meta property="og:image" content="https://www.your-domain.com/path/image.jpg" />
+
+    <link rel="icon" href="images//Kfl-1.png" width="50" height="50" type="image/ico" />
+
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--AngularJS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <!--Angular Script created-->
+    <script src="app/controllers/viewController.js"></script>
+    
+</head>
+
+<body ng-app="indexApp" ng-controller="HeaderController">
+
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <img src="images/Kflcut.png" width="50" height="50" alt="">
+
+                <a class="navbar-brand" href="#">AFL KIDS</a>
+            </div>
+            <div class="collapse navbar-collapse" >
+                <ul class="nav navbar-nav">
+                    <li><a href="/Home">Home</a></li>
+                    <li><a href="/PlayerStatic">Player Static</a></li>
+                    <li><a href="/AFLTimer">AFL Timer</a></li>
+                    <li><a href="/myGame" ng-show="authenticated">My Game</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/register" ng-hide="authenticated"><span class="glyphicon glyphicon-user"></span> Sign
+                            Up</a></li>
+                    <li><a href="/login" ng-hide="authenticated"><span
+                                class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    <li><a href='' ng-click="logout()" ng-show="authenticated"><span
+                                class="glyphicon glyphicon-log-out"></span> Logout</a> </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+      
+    <div class="container">
+        <div ng-view>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
